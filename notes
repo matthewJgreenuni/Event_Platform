@@ -1,0 +1,35 @@
+shadcn is a good component libary
+
+1 - clerk is a good auth libaryhave root and auth in different folders
+    a .env.local file is needed for clerk, create it
+    clerk requires a middleware file
+    
+
+if uploadthing fails look back at the setup stage
+
+you can attach layouts to each route group
+
+
+2 - the backend will be done in mongodb so it needs to be connected, create the folder in the lib folder
+
+
+3 - to set up a mongo database, go to mongodb, create a new project, select free plan, allow all ips and create a database, get the
+    connection code and put it into env with the same name as in your database index (so MONGODB_URI)
+
+
+4 - databases need models (how data is structured) so you need a models folder in database that has data structures
+
+
+5 - to cause the database to add users when they join, a webhook is needed that makes a request when clerk code is activated
+
+
+6 - you need to enable webhooks on the clerk dashboard. The steps to do this are:
+    install svix
+    create an endpoint in the application by creating an api/webhook/clerk folder and put in the code from the clerk docs
+
+
+
+
+
+TODOS:
+research more on webhooks and clerk/mongo relations
