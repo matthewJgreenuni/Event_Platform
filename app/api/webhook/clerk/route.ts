@@ -1,12 +1,9 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-import { createUser, updateUser, deleteUser } from '@/lib/actions/user.actions'
+import { createUser, deleteUser, updateUser } from '@/lib/actions/user.actions'
 import { clerkClient } from '@clerk/nextjs'
 import { NextResponse } from 'next/server'
-
-//this stuff was copy pasted you need to learn webhooks
-// this whole file gets activated when certain clerk actions happen
  
 export async function POST(req: Request) {
  
@@ -53,42 +50,35 @@ export async function POST(req: Request) {
     })
   }
  
-  // Get the ID and type of the event that occurs
+  // Get the ID and type
   const { id } = evt.data;
   const eventType = evt.type;
  
-  //when a user is created
-
-  if (eventType === 'user.created') {
-    const { id, email_addresses, image_url, first_name, last_name, username } = evt.data
+  if(eventType === 'user.created') {
+    const { id, email_addresses, image_url, first_name, last_name, username } = evt.data;
 
     const user = {
-        clerkId: id,
-        email: email_addresses[0].email_address,
-        username: username!, //! means that the data can sometimes be empty and that its okay
-        firstName: first_name,
-        lastName: last_name,
-        photo: image_url,
+      clerkId: id,
+      email: email_addresses[0].email_address,
+      username: username!,
+      firstName: first_name,
+      lastName: last_name,
+      photo: image_url,
     }
-
-    //create database user
-    //this function will be a database action in lib/actions
 
     const newUser = await createUser(user);
-    if(newUser){
-        await clerkClient.users.updateUserMetadata(id, {
-            publicMetadata: {
-                userId: newUser._id
-                //this gets that automatic clerk id and makes it the automatic mongo id 
-            }
-        })
+
+    if(newUser) {
+      await clerkClient.users.updateUserMetadata(id, {
+        publicMetadata: {
+          userId: newUser._id
+        }
+      })
     }
 
-    return NextResponse.json({ message: 'OK', user: newUser})
+    return NextResponse.json({ message: 'OK', user: newUser })
   }
 
-
-  //to update a user
   if (eventType === 'user.updated') {
     const {id, image_url, first_name, last_name, username } = evt.data
 
@@ -104,7 +94,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'OK', user: updatedUser })
   }
 
-  //to delete a user
   if (eventType === 'user.deleted') {
     const { id } = evt.data
 
@@ -115,4 +104,3 @@ export async function POST(req: Request) {
  
   return new Response('', { status: 200 })
 }
- 
