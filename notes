@@ -46,3 +46,4 @@ i think thats everything that needs to be done in a specific order though :)
     you need a file router when using upload thing, which goes in the api folder as core.ts and route.ts
 
 upload thing is being much more of a prick than clerk, use at own risk
+upload thing ruins everyhting
