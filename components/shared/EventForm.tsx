@@ -11,7 +11,7 @@ import * as z from 'zod';
 import { eventDefaultValues } from "@/constants";
 import Dropdown from "./Dropdown";
 import { Textarea } from "../ui/textarea";
-import FileUploader from "./FileUploader";
+import { FileUploader } from "./FileUploader";
 import { useState } from "react";
 
 interface EventFormProps {
@@ -86,6 +86,7 @@ export default function EventForm({userId, type}: EventFormProps){
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormControl className="h-72">
+                      <FileUploader onFieldChange={field.onChange} imageUrl={field.value} setFiles={setFiles} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
