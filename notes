@@ -4,8 +4,8 @@ shadcn is a good component libary
     a .env.local file is needed for clerk, create it
     clerk requires a middleware file
     
-
-if uploadthing fails look back at the setup stage
+    uploadthing for uploading things, weird install setup
+    
 
 you can attach layouts to each route group
 
@@ -34,13 +34,15 @@ you can attach layouts to each route group
 
 9 - every time you make changes to github or env, add changes and redeploy
 
-
-
 FUCKING WEBHOOKS
+- i had an issue where the clerk to mongodb connection didnt happen and data didnt transfer, this was because i specified i wanted
+    a first and last name in mongo, but didnt give it in clerk
 
+i think thats everything that needs to be done in a specific order though :)
 
+10 - for any forms use the shad cn docs theyre straight foward, as well as using zod as a validator, external or internal
 
+11 - when using upload thing, create a app on the website and copy the secret in the dashboard to env
+    you need a file router when using upload thing, which goes in the api folder as core.ts and route.ts
 
-
-TODOS:
-research more on webhooks and clerk/mongo relations
+upload thing is being much more of a prick than clerk, use at own risk
