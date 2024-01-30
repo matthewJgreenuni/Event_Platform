@@ -19,8 +19,10 @@ export default function Dropdown({ value, onChangeHandler}: dropDownProps){
   const [newCatergory, setNewCategories] = useState('')
 
   function handleAddCategory(){
+    //this required an actions file to be created
     
   }
+
   return(
     <Select onValueChange={onChangeHandler} defaultValue={value}>
       <SelectTrigger className="select-field">

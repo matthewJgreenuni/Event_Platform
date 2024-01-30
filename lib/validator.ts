@@ -1,5 +1,5 @@
 import * as z from 'zod';
-//the zod schema that allows to to have rules on the data/validation
+//the zod schema that allows to to have rules on the data/validation, extremely useful
 
 export const EventFormSchema = z.object({
     title: z.string().min(3, 'Title must be at least 3 characters'),
