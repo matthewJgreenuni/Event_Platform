@@ -17,6 +17,9 @@ import Image from "next/image";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
 import { Checkbox } from "../ui/checkbox";
+import { useUploadThing } from "@/lib/uploadthing";
+import { useRouter } from "next/navigation";
+import { createEvent } from "@/lib/actions/event.actions";
 
 interface EventFormProps {
     userId: string;
@@ -26,8 +29,12 @@ interface EventFormProps {
 //The event form needs to have the id of the user, and the type of creation passed in for user expereince, check other pages for them
 export default function EventForm({userId, type}: EventFormProps){
     const [files, setFiles] = useState<File[]>([])
+    //cursed upload thing
+    const { startUpload } = useUploadThing('imageUploader')
+
     //check constraints
     const initialValues = eventDefaultValues
+    const router = useRouter()
 
     //defining the form
     //the form is defined in zod in the validator file, all form fields must be connected to a specified type, check it out
@@ -37,10 +44,34 @@ export default function EventForm({userId, type}: EventFormProps){
       })
      
       // 2. Define a submit handler.
-      function onSubmit(values: z.infer<typeof EventFormSchema>) {
+      async function onSubmit(values: z.infer<typeof EventFormSchema>) {
         // Do something with the form values.
         // This will be type-safe and validated.
-        console.log(values)
+        const eventData = values;
+        let uploadedImageUrl = values.imageUrl
+        if(files.length > 0){
+          const uploadedImages = await startUpload(files)
+          if(!uploadedImages) return;
+
+          uploadedImageUrl = uploadedImages[0].url
+        }
+
+        if (type === "Create"){
+          try{
+            const newEvent = await createEvent({
+              event : { ...values, imageUrl: uploadedImageUrl},
+              userId,
+              path: '/profile'
+            })
+
+            if(newEvent){
+              form.reset();
+              router.push(`/events/${newEvent._id}`)
+            }
+          }catch (error){
+            console.log(error)
+          }
+        }
       }
 
   return(
@@ -64,7 +95,7 @@ export default function EventForm({userId, type}: EventFormProps){
 
               <FormField
                 control={form.control}
-                name="catergoryId"
+                name="categoryId"
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <FormControl>

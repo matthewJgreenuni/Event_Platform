@@ -13,7 +13,7 @@ export interface IEvent extends Document {
     price?: string;
     isFree: boolean;
     url?: string;
-    catagory: {_id: string, name: string }
+    category: {_id: string, name: string }
     organizer: { _id: string, firstName: string, lastName: string }
 }
 
@@ -29,7 +29,7 @@ const EventSchema = new Schema({
     price: { type: String },
     isFree: {type: Boolean, default: false },
     url: { type: String},
-    catagory: { type: Schema.Types.ObjectId, ref: 'Catagory' },
+    category: { type: Schema.Types.ObjectId, ref: 'Category' },
     organizer: { type: Schema.Types.ObjectId, ref: 'User' }
 })
 

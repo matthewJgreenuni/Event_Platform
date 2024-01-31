@@ -1,8 +1,9 @@
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ICategory } from "@/lib/database/models/category.model";
-import { startTransition, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import {AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger} from "@/components/ui/alert-dialog"
 import { Input } from "../ui/input";
+import { createCategory, getAllCategories } from "@/lib/actions/category.actions";
 
   
 
@@ -16,10 +17,22 @@ export default function Dropdown({ value, onChangeHandler}: dropDownProps){
   //this useState lets us create categories dynamically
   //ICategory can be seen in the lib folder
   const [categories, setCategories] = useState<ICategory[]>([])
-  const [newCatergory, setNewCategories] = useState('')
+  const [newCategory, setNewCategories] = useState('')
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const categoriesList = await getAllCategories();
+
+      categoriesList && setCategories(categoriesList as ICategory[])
+    }
+
+    getCategories()
+  },[])
 
   function handleAddCategory(){
-    //this required an actions file to be created
+    createCategory({
+      categoryName: newCategory.trim()
+    }).then((category) => setCategories((prevState) => [...prevState, category]))
     
   }
 
@@ -29,19 +42,19 @@ export default function Dropdown({ value, onChangeHandler}: dropDownProps){
           <SelectValue placeholder="Category" />
       </SelectTrigger>
       <SelectContent>
-        {categories.length > 0 && categories.map((catergory) => (
-          <SelectItem key={catergory._id} value={catergory._id} className="select-item p-regular-14">
-            {catergory.name}
+        {categories.length > 0 && categories.map((category) => (
+          <SelectItem key={category._id} value={category._id} className="select-item p-regular-14">
+            {category.name}
           </SelectItem>
         ))}
 
         <AlertDialog>
-          <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">Open</AlertDialogTrigger>
+          <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">Add category</AlertDialogTrigger>
           <AlertDialogContent className="bg-white">
             <AlertDialogHeader>
-              <AlertDialogTitle>New Catergory</AlertDialogTitle>
+              <AlertDialogTitle>New Category</AlertDialogTitle>
               <AlertDialogDescription>
-                <Input type="text" placeholder="Catergory name" className="mt-3 input-field" onChange={(e) => setNewCategories(e.target.value)} />
+                <Input type="text" placeholder="Category name" className="mt-3 input-field" onChange={(e) => setNewCategories(e.target.value)} />
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

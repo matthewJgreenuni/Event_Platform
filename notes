@@ -49,3 +49,12 @@ upload thing is being much more of a prick than clerk, use at own risk
 upload thing ruins everyhting
 
 holy shit upload thing just started working overnight, still use with care
+
+12 - mongodb objects need models, each model should also have an action file to fetch or add data
+
+13 - the create event didnt work at first cause i wasnt asking clerk for access to collect the user id metadata,
+    this was fixed by going to dashboard sessions and adding "userId": "{{user.public_metadata.userId}}" to the session
+
+
+
+might need this later: http://localhost:3000/events/65babea0953e9d914a57e219
