@@ -19,21 +19,26 @@ import "react-datepicker/dist/react-datepicker.css"
 import { Checkbox } from "../ui/checkbox";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useRouter } from "next/navigation";
-import { createEvent } from "@/lib/actions/event.actions";
+import { createEvent, updateEvent } from "@/lib/actions/event.actions";
+import { IEvent } from "@/lib/database/models/event.model";
 
 interface EventFormProps {
     userId: string;
     type: "Create" | "Edit";
+    event?: IEvent;
+    eventId?: string
 }
 
 //The event form needs to have the id of the user, and the type of creation passed in for user expereince, check other pages for them
-export default function EventForm({userId, type}: EventFormProps){
+export default function EventForm({ userId, type, event, eventId }: EventFormProps){
     const [files, setFiles] = useState<File[]>([])
     //cursed upload thing
     const { startUpload } = useUploadThing('imageUploader')
 
     //check constraints
-    const initialValues = eventDefaultValues
+    const initialValues = event && type === 'Edit'
+     ? {...event, startDateTime: new Date(event.startDateTime), endDateTime: new Date(event.endDateTime)}
+     : eventDefaultValues
     const router = useRouter()
 
     //defining the form
@@ -72,6 +77,29 @@ export default function EventForm({userId, type}: EventFormProps){
             console.log(error)
           }
         }
+
+        if (type === "Edit"){
+          if(!eventId){
+            router.back()
+            return;
+          }
+          try{
+            const updatedEvent = await updateEvent({
+              userId,
+              event : { ...values, imageUrl: uploadedImageUrl, _id: eventId},
+              path: `/events/${eventId}`
+            })
+
+            if(updatedEvent){
+              form.reset();
+              router.push(`/events/${updatedEvent._id}`)
+            }
+          }catch (error){
+            console.log(error)
+          }
+        }
+
+
       }
 
   return(
