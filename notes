@@ -55,6 +55,8 @@ holy shit upload thing just started working overnight, still use with care
 13 - the create event didnt work at first cause i wasnt asking clerk for access to collect the user id metadata,
     this was fixed by going to dashboard sessions and adding "userId": "{{user.public_metadata.userId}}" to the session
 
+14 - while rendering "unknown images", you need to go to the next config file and add upload thing server (utfs.io) to providers
+
 
 
 might need this later: http://localhost:3000/events/65babea0953e9d914a57e219
