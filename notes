@@ -57,6 +57,6 @@ holy shit upload thing just started working overnight, still use with care
 
 14 - while rendering "unknown images", you need to go to the next config file and add upload thing server (utfs.io) to providers
 
+15 - if using stripe, make sure to install @stripe/stripe-js and stripe, you will need to follow the docs to get your public and secret env variable as well as needing to define a next_public_server_url which will be the sites https location
 
-
-might need this later: http://localhost:3000/events/65babea0953e9d914a57e219
+afterwards, add the webhook endpoints, give it your deployed url and get the endpoint env, as well as adding another webhook route, just like clerk but with api/webhook/stripe
