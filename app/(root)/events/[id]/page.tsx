@@ -87,9 +87,9 @@ export default async function EventDetails({ params: { id }, searchParams}: Sear
             emptyTitle='No Events Found'
             emptyStateSubtext = 'Come back later'
             collectionType='All_Events'
-            limit={6}
+            limit={3}
             page={1}
-            totalPages={2}
+            totalPages={1}
             />
         </section>
 
@@ -100,9 +100,9 @@ export default async function EventDetails({ params: { id }, searchParams}: Sear
             emptyTitle='No Events Found'
             emptyStateSubtext = 'Come back later'
             collectionType='All_Events'
-            limit={6}
+            limit={3}
             page={1}
-            totalPages={2}
+            totalPages={1}
             />
         </section>
         </>
