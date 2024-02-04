@@ -1,3 +1,4 @@
+import CheckoutButton from "@/components/shared/CheckoutButton";
 import Collection from "@/components/shared/Collection";
 import { getEventById, getRelatedEventsByCategory, getRelatedEventsByOrganizer } from "@/lib/actions/event.actions";
 import { formatDateTime } from "@/lib/utils";
@@ -24,11 +25,13 @@ export default async function EventDetails({ params: { id }, searchParams}: Sear
         <>
         <section className="flex justify-center bg-primary-50 bg-dotted-pattern bg-contain">
             <div className="grid grid-cols-1 md:grid-cols-2 2xl:max-w-7xl">
-                <Image
-                 src={event.imageUrl} alt="image"
-                 width={1000} height={1000}
-                 className="h-full min-h-[300px] object-cover object-center"
-                />
+                <div>
+                    <Image
+                    src={event.imageUrl} alt="image"
+                    width={1000} height={1000}
+                    className="h-full min-h-[300px] object-cover object-center"
+                    />
+                </div>
 
                 <div className="flex w-full flex-col gap-8 p-5 md:p-10">
                     <div className="flex flex-col gap-6">
@@ -42,6 +45,7 @@ export default async function EventDetails({ params: { id }, searchParams}: Sear
                         </div>
                     </div>
                     {/* checkout button */}
+                    <CheckoutButton event={event} />
                     <div className="flex flex-col gap-5">
                         <div className="flex gap-2 md:gap-3">
                             <Image
@@ -92,7 +96,7 @@ export default async function EventDetails({ params: { id }, searchParams}: Sear
         <section className="wrapper my-8 flex flex-col gap-8 md:gap-12">
             <h2 className="h2-bold">Same Organizer</h2>
             <Collection
-            data={relatedCategories?.data}
+            data={sameOrganizer?.data}
             emptyTitle='No Events Found'
             emptyStateSubtext = 'Come back later'
             collectionType='All_Events'
